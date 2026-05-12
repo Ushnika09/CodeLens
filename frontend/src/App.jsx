@@ -19,6 +19,8 @@ import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassword from "./components/auth/ForgotPassword";
+import AccountCenterPage from "./pages/AccountCenterPage";
+import GitHubIntelligencePage from "./pages/GitHubIntelligencePage";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import PublicRoute from "./components/shared/PublicRoute";
 
@@ -52,6 +54,22 @@ export default function App() {
                   <DashboardPage />
                 </ProtectedRoute>
               } 
+            />
+            <Route
+              path="/account-center"
+              element={
+                <ProtectedRoute>
+                  <AccountCenterPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/github-intelligence"
+              element={
+                <ProtectedRoute>
+                  <GitHubIntelligencePage />
+                </ProtectedRoute>
+              }
             />
             <Route 
               path="/forgot-password" 

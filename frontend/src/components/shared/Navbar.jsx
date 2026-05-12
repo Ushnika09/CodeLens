@@ -179,6 +179,11 @@ export default function Navbar() {
               Codeforces
             </Link>
           )}
+          {isAuthenticated && (
+            <Link to="/account-center" className={linkCls("/account-center")}>
+              Account Center
+            </Link>
+          )}
 
           {/* ── Tools Mega Menu Trigger ── */}
           <div
@@ -354,6 +359,12 @@ export default function Navbar() {
                   {getUserDisplayName()}
                 </span>
               </div>
+              <Link
+                to="/github-intelligence"
+                className="px-4 py-2 bg-white text-black text-xs font-black uppercase tracking-widest border-4 border-black hover:bg-black hover:text-white transition-colors duration-150"
+              >
+                GitHub Data
+              </Link>
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 bg-white text-black text-sm font-black uppercase tracking-widest border-4 border-black hover:bg-black hover:text-white transition-colors duration-150"
@@ -427,6 +438,15 @@ export default function Navbar() {
                 className="px-5 py-4 text-sm font-black uppercase tracking-widest text-black border-b-2 border-black hover:bg-black hover:text-white transition-colors duration-150 flex items-center justify-between"
               >
                 Codeforces <span className="opacity-40">→</span>
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/account-center"
+                onClick={closeMenu}
+                className="px-5 py-4 text-sm font-black uppercase tracking-widest text-black border-b-2 border-black hover:bg-black hover:text-white transition-colors duration-150 flex items-center justify-between"
+              >
+                Account Center <span className="opacity-40">→</span>
               </Link>
             )}
 
@@ -556,6 +576,13 @@ export default function Navbar() {
                     {getUserDisplayName()}
                   </span>
                 </div>
+                <Link
+                  to="/github-intelligence"
+                  onClick={closeMenu}
+                  className="px-5 py-4 text-sm font-black uppercase tracking-widest text-black border-b-2 border-black hover:bg-black hover:text-white transition-colors duration-150 flex items-center justify-between"
+                >
+                  GitHub Data <span className="opacity-40">→</span>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="px-5 py-4 text-sm font-black uppercase tracking-widest text-black border-b-2 border-black hover:bg-black hover:text-white transition-colors duration-150 text-left"

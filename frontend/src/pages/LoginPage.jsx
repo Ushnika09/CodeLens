@@ -11,6 +11,7 @@ export default function LoginPage() {
   
   const auth = useAuth();
   const navigate = useNavigate();
+  const [githubMessage, setGithubMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +28,10 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGitHubLogin = () => {
+    setGithubMessage("GitHub OAuth redirect will be wired in backend milestone. UI is ready.");
   };
 
   return (
@@ -88,6 +93,27 @@ export default function LoginPage() {
           >
             {loading ? 'AUTHENTICATING...' : 'SIGN IN'}
           </button>
+
+          <div className="relative py-1">
+            <div className="border-t-4 border-black" />
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-[10px] font-black uppercase tracking-[0.22em]">
+              or
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGitHubLogin}
+            className="w-full py-5 border-4 border-black bg-white text-black text-sm font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+          >
+            Continue with GitHub
+          </button>
+
+          {githubMessage && (
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-gray-600 text-center">
+              {githubMessage}
+            </p>
+          )}
         </form>
         
         <div className="mt-10 text-center border-t-4 border-black pt-8">

@@ -10,6 +10,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const [githubMessage, setGithubMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   
@@ -75,6 +76,10 @@ export default function SignupPage() {
     }
   };
 
+  const handleGitHubSignup = () => {
+    setGithubMessage("GitHub OAuth redirect will be wired in backend milestone. UI is ready.");
+  };
+
   return (
     <div className="w-full flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-12 sm:py-20 bg-white">
       <div className="w-full max-w-md border-4 border-black p-6 sm:p-8 md:p-12 bg-white shadow-[8px_8px_0_0_rgba(0,0,0,1)] md:shadow-[16px_16px_0_0_rgba(0,0,0,1)]">
@@ -92,6 +97,27 @@ export default function SignupPage() {
 
         {step === 1 ? (
           <form className="flex flex-col space-y-8" onSubmit={handleRegister}>
+            <button
+              type="button"
+              onClick={handleGitHubSignup}
+              className="w-full py-5 border-4 border-black bg-black text-white text-sm font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
+            >
+              Sign up with GitHub
+            </button>
+
+            {githubMessage && (
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-gray-600 text-center -mt-4">
+                {githubMessage}
+              </p>
+            )}
+
+            <div className="relative py-1">
+              <div className="border-t-4 border-black" />
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-[10px] font-black uppercase tracking-[0.22em]">
+                or register with email
+              </span>
+            </div>
+
             <div className="flex flex-col space-y-3">
               <label className="text-sm font-black uppercase tracking-widest text-black">
                 Full Name
