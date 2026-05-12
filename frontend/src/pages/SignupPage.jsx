@@ -10,12 +10,13 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
-  const [githubMessage, setGithubMessage] = useState("");
+  const [githubMessage, setGithubMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   
   const auth = useAuth();
   const navigate = useNavigate();
+  const isPasswordValid = password.length >= 6;
 
   useEffect(() => {
     let timer;
@@ -30,6 +31,12 @@ export default function SignupPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!isPasswordValid) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -77,7 +84,7 @@ export default function SignupPage() {
   };
 
   const handleGitHubSignup = () => {
-    setGithubMessage("GitHub OAuth redirect will be wired in backend milestone. UI is ready.");
+    setGithubMessage('GitHub OAuth redirect will be wired in backend milestone. UI is ready.');
   };
 
   return (
@@ -151,15 +158,27 @@ export default function SignupPage() {
               <input 
                 type="password" 
                 value={password}
+                minLength={6}
                 onChange={(e) => setPassword(e.target.value)}
+                aria-invalid={password.length > 0 && !isPasswordValid}
                 className="w-full p-5 border-4 border-black rounded-none text-black font-bold focus:outline-none focus:ring-0 focus:border-gray-500"
                 placeholder="••••••••"
                 required
               />
+              <div className="min-h-[16px]">
+                {password && !isPasswordValid && (
+                  <p
+                    role="alert"
+                    className="text-xs font-black uppercase tracking-widest text-red-600"
+                  >
+                    Password must be at least 6 characters
+                  </p>
+                )}
+              </div>
             </div>
             <button 
               type="submit" 
-              disabled={loading}
+              disabled={loading || !name.trim() || !email.trim() || !isPasswordValid}
               className="w-full mt-4 py-6 bg-white text-black text-xl font-black uppercase tracking-widest hover:bg-gray-100 transition-colors border-4 border-black rounded-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'CREATING...' : 'CREATE ACCOUNT'}

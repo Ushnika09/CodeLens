@@ -80,13 +80,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Close mega menu on route change
-  useEffect(() => {
-    setMegaOpen(false);
-    setIsMenuOpen(false);
-    setMobileMegaOpen(false);
-  }, [location.pathname]);
-
   // Close mega on outside click
   useEffect(() => {
     const handler = (e) => {
