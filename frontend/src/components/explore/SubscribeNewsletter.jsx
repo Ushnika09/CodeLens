@@ -60,14 +60,16 @@ export default function SubscribeNewsletter() {
             Subscribe
           </button>
         </form>
-        {error && (
-          <p
-            role="alert"
-            className="mt-4 text-red-600 text-sm sm:text-base font-black uppercase tracking-widest"
-          >
-            {error}
-          </p>
-        )}
+        <div className="min-h-[24px] mt-4">
+          {error && (
+            <p
+              role="alert"
+              className="text-red-600 text-sm sm:text-base font-black uppercase tracking-widest"
+            >
+              {error}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
