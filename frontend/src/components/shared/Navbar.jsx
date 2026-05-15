@@ -197,9 +197,8 @@ export default function Navbar() {
               Tools
               <span
                 className="inline-block transition-transform duration-200 text-xs"
-                style={{ transform: megaOpen ? "rotate(180deg)" : "rotate(0deg)" }}
               >
-                ▾
+                {megaOpen ? "▴" : "▾"}
               </span>
             </button>
 
