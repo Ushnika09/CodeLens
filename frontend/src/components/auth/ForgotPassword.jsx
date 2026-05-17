@@ -43,7 +43,9 @@ export default function ForgotPassword() {
     e.preventDefault();
     setError('');
 
-    if (!isEmailValid) {
+    const trimmedEmail = email.trim();
+
+    if (!trimmedEmail || !isEmailValid) {
       setError("Please enter a valid email address");
       return;
     }
@@ -51,7 +53,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      await authService.forgotPassword(email);
+      await authService.forgotPassword(trimmedEmail);
       setStep(2);
       setCooldown(60);
     } catch (err) {
@@ -65,25 +67,32 @@ export default function ForgotPassword() {
     e.preventDefault();
     setError('');
 
-    if (!isOtpValid) {
+    const normalizedOtp = otp.trim();
+
+    if (normalizedOtp.length !== 6) {
       setError("OTP must be 6 characters");
       return;
     }
-    
-    if (!doPasswordsMatch) {
-      setError("Passwords do not match");
+
+    if (!newPassword.trim() || !confirmPassword.trim()) {
+      setError("Password cannot be empty or whitespace");
       return;
     }
 
     if (!isPasswordValid) {
-      setError('Password must be at least 6 characters');
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (!doPasswordsMatch) {
+      setError("Passwords do not match");
       return;
     }
 
     setLoading(true);
 
     try {
-      await authService.resetPassword(email, otp, newPassword);
+      await authService.resetPassword(email.trim(), normalizedOtp, newPassword);
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to reset password');
@@ -130,21 +139,28 @@ export default function ForgotPassword() {
             onSubmit={handleSendResetCode}
           >
             <p className="text-sm font-black uppercase tracking-widest text-black">
-              Enter your email address and we'll send you a code to reset your password.
+              Enter your email address and we'll send you a code to reset your
+              password.
             </p>
 
             <div className="flex flex-col space-y-3">
-              <label className="text-sm font-black uppercase tracking-widest text-black">
+              <label
+                htmlFor="email"
+                className="text-sm font-black uppercase tracking-widest text-black"
+              >
                 Email
               </label>
               <input
                 type="email"
+                id="email"
                 value={email}
+                autoComplete="email"
                 aria-describedby={
                   email && !isEmailValid ? "email-error" : undefined
                 }
                 aria-invalid={email.length > 0 && !isEmailValid}
-                onChange={(e) => { setEmail(e.target.value);
+                onChange={(e) => {
+                  setEmail(e.target.value);
                   setIsEmailValid(
                     validateEmail(e.target.value, e.target.validity),
                   );
@@ -202,8 +218,14 @@ export default function ForgotPassword() {
               <input
                 type="text"
                 value={otp}
+                id="otp"
+                inputMode="text"
                 aria-invalid={otp.length > 0 && !isOtpValid}
-                onChange={(e) => setOtp(e.target.value.toUpperCase())}
+                onChange={(e) =>
+                  setOtp(
+                    e.target.value.replace(/[^A-Z0-9]/gi, "").toUpperCase(),
+                  )
+                }
                 maxLength={6}
                 className="w-full p-5 border-4 border-black rounded-none text-black font-black text-2xl tracking-[0.5em] text-center focus:outline-none focus:ring-0 focus:border-gray-500 uppercase"
                 placeholder="______"
@@ -222,14 +244,19 @@ export default function ForgotPassword() {
             </div>
 
             <div className="flex flex-col space-y-3">
-              <label className="text-sm font-black uppercase tracking-widest text-black">
+              <label
+                htmlFor="new-password"
+                className="text-sm font-black uppercase tracking-widest text-black"
+              >
                 New Password
               </label>
               <input
                 type="password"
+                autoComplete="new-password"
                 minLength={6}
                 aria-invalid={newPassword.length > 0 && !isPasswordValid}
                 value={newPassword}
+                id="new-password"
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full p-5 border-4 border-black rounded-none text-black font-bold focus:outline-none focus:ring-0 focus:border-gray-500"
                 placeholder="••••••••"
@@ -248,13 +275,16 @@ export default function ForgotPassword() {
             </div>
 
             <div className="flex flex-col space-y-3">
-              <label className="text-sm font-black uppercase tracking-widest text-black">
+              <label
+              htmlFor="confirm-password"
+              className="text-sm font-black uppercase tracking-widest text-black">
                 Confirm Password
               </label>
               <input
                 type="password"
                 aria-invalid={confirmPassword.length > 0 && !doPasswordsMatch}
                 value={confirmPassword}
+                id="confirm-password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full p-5 border-4 border-black rounded-none text-black font-bold focus:outline-none focus:ring-0 focus:border-gray-500"
                 placeholder="••••••••"
